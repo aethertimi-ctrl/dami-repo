@@ -17,32 +17,34 @@
   <style>
     :root {
       color-scheme: light;
-      --bg1: #fff8f5;
-      --bg2: #ffeaf0;
-      --glow: #ffe1e8;
-      --ink: #482b36;
-      --muted: #76535f;
-      --deep: #a83253;
-      --btn: #d6405c;
-      --btn-hover: #a83253;
-      --card: rgba(255, 255, 255, 0.82);
-      --soft: #fffafb;
-      --border: #f5d3dc;
-      --shadow: rgba(139, 54, 80, 0.14);
+      --bg1: #F1E8D8;
+      --bg2: #E5D9C4;
+      --glow: #D9C39B;
+      --ink: #101D32;
+      --muted: #526174;
+      --deep: #9B7A43;
+      --btn: #1C2D46;
+      --btn-hover: #101D32;
+      --card: rgba(255, 253, 248, 0.88);
+      --soft: #FFFDF8;
+      --border: #C5A46D;
+      --shadow: rgba(16, 29, 50, 0.16);
     }
 
     :root[data-theme="night"] {
       color-scheme: dark;
-      --bg1: #1b1024;
-      --bg2: #2c1334;
-      --glow: #4a1d4f;
-      --ink: #f8e6ee;
-      --muted: #d3b2c2;
-      --deep: #ff9bb3;
-      --card: rgba(43, 22, 48, 0.8);
-      --soft: #34193a;
-      --border: #5a3059;
-      --shadow: rgba(0, 0, 0, 0.45);
+      --bg1: #101D32;
+      --bg2: #1C2D46;
+      --glow: #34445A;
+      --ink: #F1E8D8;
+      --muted: #C7C0B2;
+      --deep: #D8BD87;
+      --btn: #C5A46D;
+      --btn-hover: #A88752;
+      --card: rgba(28, 45, 70, 0.88);
+      --soft: #243750;
+      --border: #8B744E;
+      --shadow: rgba(0, 0, 0, 0.42);
     }
 
     * { box-sizing: border-box; }
@@ -118,7 +120,7 @@
 
     .grad {
       color: var(--deep);
-      background: linear-gradient(90deg, var(--deep), #ff6f8e, #ffb36b, #ff6f8e, var(--deep));
+      background: linear-gradient(90deg, var(--deep), #C5A46D, #F1E8D8, #C5A46D, var(--deep));
       background-size: 250% 100%;
       -webkit-background-clip: text;
       background-clip: text;
@@ -248,7 +250,7 @@
       color: #fff;
       cursor: pointer;
       font: 700 1.05rem Arial, sans-serif;
-      box-shadow: 0 10px 26px rgba(214, 64, 92, 0.35);
+      box-shadow: 0 10px 26px rgba(16, 29, 50, 0.24);
       transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
     }
     .love-button:hover {
@@ -333,7 +335,7 @@
     .flip:hover .front .big { transform: scale(1.25); }
     .front .tap { color: var(--muted); font: 0.78rem Arial, sans-serif; }
     .back {
-      background: linear-gradient(145deg, #e85d75, #a83253);
+      background: linear-gradient(145deg, #1C2D46, #C5A46D);
       border-color: transparent;
       color: #fff;
       font-size: 1rem;
@@ -372,7 +374,7 @@
       width: 100%;
       padding: 0;
       border: 0;
-      background: #2a1720;
+      background: #101820;
       cursor: zoom-in;
     }
     .preview img, .preview video {
@@ -380,7 +382,7 @@
       width: 100%;
       max-height: 520px;
       object-fit: contain;
-      background: #2a1720;
+      background: #101820;
     }
     .img-btn img { transition: transform 400ms ease; }
     .img-btn:hover img { transform: scale(1.03); }
@@ -402,7 +404,7 @@
       padding: 0;
       border: 0;
       border-radius: 50%;
-      background: repeating-radial-gradient(circle, #1b1117 0 2px, #2c1c25 3px 4px);
+      background: repeating-radial-gradient(circle, #090F18 0 2px, #26364A 3px 4px);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
       cursor: pointer;
       animation: spin 5s linear infinite;
@@ -423,8 +425,8 @@
       display: grid;
       place-items: center;
       border-radius: 50%;
-      background: var(--btn);
-      color: #fff;
+      background: #C5A46D;
+      color: #101D32;
       font-size: 1.4rem;
     }
     .player .caption {
@@ -569,7 +571,7 @@
           </section>
 
           <section class="preview" id="audioPreview">
-            <h3>Our songs</h3>
+            <h3>a song for us</h3>
             <div class="player">
               <button class="vinyl" id="vinyl" type="button" aria-label="Play or pause our song" aria-pressed="false"></button>
               <span class="caption">Tap the record to play</span>
@@ -601,7 +603,7 @@
       </section>
     </main>
 
-    <footer>Made with ♥ for <span data-name>Williams</span>. Keep your favorite moments close.</footer>
+    <footer>Made with ♥ for <span data-name>Williams</span>.</footer>
   </div>
 
   <dialog id="lightbox" aria-label="Picture">
@@ -683,7 +685,7 @@
       /* ---------------- Particle canvas ---------------- */
       const canvas = $("fx");
       const ctx = canvas.getContext("2d");
-      const COLORS = ["#e85d75", "#ff8fa3", "#ffb3c1", "#c9184a", "#ff6f91"];
+      const COLORS = ["#C5A46D", "#D8BD87", "#F1E8D8", "#A88752", "#9B7A43"];
       const BURST_CHARS = ["♥", "♥", "♥", "💕", "💗", "✨"];
       let W = 0, H = 0, starsW = 0, stars = [], particles = [], raf = 0, last = 0;
 
