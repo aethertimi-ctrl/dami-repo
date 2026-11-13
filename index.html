@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Williams ♥</title>
+  <script>
+    // Runs before first paint: sets the theme and tells CSS that JS is available.
+    (function () {
+      var r = document.documentElement, t = null;
+      r.classList.add("js");
+      try { t = localStorage.getItem("theme"); } catch (e) {}
+      if (!t) t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "night" : "day";
+      r.dataset.theme = t;
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg1: #fff8f5;
+      --bg2: #ffeaf0;
+      --glow: #ffe1e8;
+      --ink: #482b36;
+      --muted: #76535f;
+      --deep: #a83253;
+      --btn: #d6405c;
+      --btn-hover: #a83253;
+      --card: rgba(255, 255, 255, 0.82);
+      --soft: #fffafb;
+      --border: #f5d3dc;
+      --shadow: rgba(139, 54, 80, 0.14);
+    }
+
+    :root[data-theme="night"] {
+      color-scheme: dark;
+      --bg1: #1b1024;
+      --bg2: #2c1334;
+      --glow: #4a1d4f;
+      --ink: #f8e6ee;
+      --muted: #d3b2c2;
+      --deep: #ff9bb3;
+      --card: rgba(43, 22, 48, 0.8);
+      --soft: #34193a;
+      --border: #5a3059;
+      --shadow: rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(ellipse at top left, var(--glow) 0, transparent 45%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    #fx {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .page { position: relative; z-index: 1; }
+
+    .theme-toggle {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 10;
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--card);
+      box-shadow: 0 6px 20px var(--shadow);
+      font-size: 1.25rem;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: transform 200ms ease;
+    }
+    .theme-toggle:hover { transform: rotate(20deg) scale(1.08); }
+
+    header {
+      padding: 56px 20px 24px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      color: var(--deep);
+      font: 700 0.78rem/1.4 Arial, sans-serif;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: clamp(2.6rem, 9vw, 5.4rem);
+      line-height: 1.1;
+    }
+
+    .grad {
+      color: var(--deep);
+      background: linear-gradient(90deg, var(--deep), #ff6f8e, #ffb36b, #ff6f8e, var(--deep));
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 8s linear infinite;
+    }
+
+    .beat {
+      display: inline-block;
+      color: var(--btn);
+      animation: beat 1.6s ease-in-out infinite;
+    }
+
+    header p {
+      max-width: 520px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(940px, calc(100% - 32px));
+      margin: 0 auto 48px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .card {
+      padding: clamp(20px, 5vw, 40px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--card);
+      box-shadow: 0 18px 55px var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .card h2.title {
+      margin: 0 0 6px;
+      text-align: center;
+      color: var(--deep);
+      font-size: clamp(1.4rem, 4vw, 1.9rem);
+    }
+
+    .card .sub {
+      margin: 0 0 22px;
+      text-align: center;
+      color: var(--muted);
+      font: 0.95rem/1.5 Arial, sans-serif;
+    }
+
+    /* ---------- scroll reveal ---------- */
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ---------- hero ---------- */
+    .message {
+      margin: 0 auto 26px;
+      max-width: 650px;
+      min-height: 5.4em;
+      text-align: center;
+      font-size: clamp(1.15rem, 3.4vw, 1.5rem);
+      line-height: 1.8;
+    }
+
+    .typed:not(.done)::after {
+      content: "|";
+      margin-left: 2px;
+      color: var(--btn);
+      animation: blink 0.8s steps(1) infinite;
+    }
+
+    .together {
+      margin: 0 auto 30px;
+      text-align: center;
+    }
+    .together .label {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font: 700 0.78rem/1.4 Arial, sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .units {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+    .unit {
+      padding: 12px 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--soft);
+    }
+    .unit b {
+      display: block;
+      color: var(--deep);
+      font: 700 clamp(1.4rem, 6vw, 2rem)/1.1 Georgia, serif;
+      font-variant-numeric: tabular-nums;
+    }
+    .unit span {
+      color: var(--muted);
+      font: 0.72rem Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .love-area { text-align: center; }
+
+    .love-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-width: 210px;
+      min-height: 58px;
+      padding: 12px 22px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--btn);
+      color: #fff;
+      cursor: pointer;
+      font: 700 1.05rem Arial, sans-serif;
+      box-shadow: 0 10px 26px rgba(214, 64, 92, 0.35);
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+    .love-button:hover {
+      transform: translateY(-3px) scale(1.03);
+      background: var(--btn-hover);
+    }
+    .love-button:active { transform: scale(0.95); }
+    .love-button:focus-visible,
+    .flip:focus-visible,
+    .vinyl:focus-visible,
+    .img-btn:focus-visible,
+    .theme-toggle:focus-visible {
+      outline: 3px solid var(--deep);
+      outline-offset: 3px;
+    }
+
+    #loveMessage {
+      min-height: 30px;
+      margin: 18px 0 0;
+      color: var(--deep);
+      font-size: 1.1rem;
+    }
+    .love-count {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font: 0.9rem Arial, sans-serif;
+    }
+    .hint {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font: 0.85rem Arial, sans-serif;
+      opacity: 0.85;
+    }
+
+    /* ---------- reasons (flip cards) ---------- */
+    .reasons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .flip {
+      position: relative;
+      height: 160px;
+      perspective: 900px;
+      cursor: pointer;
+      transition: transform 150ms ease-out;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 18px;
+    }
+    .flip-inner {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .flip.flipped .flip-inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      text-align: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .front { background: linear-gradient(145deg, var(--soft), var(--card)); }
+    .front .num {
+      color: var(--deep);
+      font: 700 0.75rem Arial, sans-serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .front .big { color: var(--btn); font-size: 2.2rem; line-height: 1; transition: transform 200ms; }
+    .flip:hover .front .big { transform: scale(1.25); }
+    .front .tap { color: var(--muted); font: 0.78rem Arial, sans-serif; }
+    .back {
+      background: linear-gradient(145deg, #e85d75, #a83253);
+      border-color: transparent;
+      color: #fff;
+      font-size: 1rem;
+      line-height: 1.45;
+      transform: rotateY(180deg);
+    }
+
+    .progress {
+      margin: 20px 0 0;
+      text-align: center;
+      color: var(--deep);
+      font: 700 0.95rem Arial, sans-serif;
+    }
+
+    /* ---------- memories ---------- */
+    .previews { display: grid; gap: 18px; }
+
+    .preview {
+      display: none;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--soft);
+    }
+    .preview.visible { display: block; }
+
+    .preview h3 {
+      margin: 0;
+      padding: 14px 16px 8px;
+      color: var(--deep);
+      font-size: 1.1rem;
+    }
+
+    .img-btn {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: #2a1720;
+      cursor: zoom-in;
+    }
+    .preview img, .preview video {
+      display: block;
+      width: 100%;
+      max-height: 520px;
+      object-fit: contain;
+      background: #2a1720;
+    }
+    .img-btn img { transition: transform 400ms ease; }
+    .img-btn:hover img { transform: scale(1.03); }
+    .img-btn { overflow: hidden; }
+
+    .player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px 18px;
+    }
+    .player audio { width: 100%; }
+
+    .vinyl {
+      position: relative;
+      width: min(190px, 52vw);
+      aspect-ratio: 1;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, #1b1117 0 2px, #2c1c25 3px 4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      animation: spin 5s linear infinite;
+      animation-play-state: paused;
+    }
+    .vinyl.playing { animation-play-state: running; }
+    .vinyl::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent 0 18%, rgba(255,255,255,0.14) 25%, transparent 32% 68%, rgba(255,255,255,0.14) 75%, transparent 82%);
+    }
+    .vinyl::after {
+      content: "♥";
+      position: absolute;
+      inset: 33%;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--btn);
+      color: #fff;
+      font-size: 1.4rem;
+    }
+    .player .caption {
+      color: var(--muted);
+      font: 0.85rem Arial, sans-serif;
+    }
+
+    /* ---------- gallery / songs / uploader ---------- */
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; padding: 0 12px 12px; }
+    .gallery .img-btn { aspect-ratio: 1; border-radius: 12px; }
+    .gallery .img-btn img { height: 100%; object-fit: cover; }
+    .gallery.one { grid-template-columns: 1fr; padding: 0; }
+    .gallery.one .img-btn { aspect-ratio: auto; border-radius: 0; }
+    .gallery.one .img-btn img { height: auto; object-fit: contain; }
+    .videos { display: grid; gap: 12px; padding: 0 12px 12px; }
+    .videos video { border-radius: 12px; }
+    .tracks { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .tracks button, .pick {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--ink);
+      font: 0.85rem Arial, sans-serif;
+      cursor: pointer;
+    }
+    .tracks button.on { background: var(--btn); border-color: var(--btn); color: #fff; }
+    .up { display: grid; gap: 14px; justify-items: center; color: var(--muted); font: 0.9rem Arial, sans-serif; }
+    .up label:not(.pick) { display: grid; gap: 6px; justify-items: center; width: 100%; }
+    .up input[type="password"] {
+      width: min(420px, 100%);
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--soft);
+      color: var(--ink);
+      font: 0.95rem Arial, sans-serif;
+    }
+    .pick { position: relative; padding: 12px 22px; background: var(--btn); border-color: var(--btn); color: #fff; font-weight: 700; }
+    .pick:focus-within { outline: 3px solid var(--deep); outline-offset: 3px; }
+    #upStatus p { margin: 3px 0; text-align: center; }
+
+    /* ---------- lightbox ---------- */
+    dialog#lightbox {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      max-width: 96vw;
+      max-height: 92vh;
+      overflow: visible;
+    }
+    dialog#lightbox::backdrop { background: rgba(20, 8, 20, 0.88); }
+    dialog#lightbox img {
+      display: block;
+      max-width: 96vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      cursor: zoom-out;
+    }
+
+    footer {
+      padding: 0 16px 32px;
+      color: var(--muted);
+      font: 0.85rem Arial, sans-serif;
+      text-align: center;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes shimmer { to { background-position: -250% 0; } }
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.25); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.18); }
+      70% { transform: scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .grad, .beat, .vinyl, .typed::after { animation: none !important; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .flip-inner { transition-duration: 1ms; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to night mode">🌙</button>
+
+  <div class="page">
+    <header>
+      <div class="eyebrow">Made with love</div>
+      <h1><span class="grad">For <span data-name>Williams</span></span> <span class="beat" aria-hidden="true">♥</span></h1>
+      <p>A cozy little place for our favorite memories, songs, and moments together.</p>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="card reveal" aria-label="A message for Williams">
+        <p class="message">
+          <span class="sr-only" id="introFull"></span>
+          <span class="typed" id="typed" aria-hidden="true"></span>
+        </p>
+
+        <div class="together" id="together" role="group" hidden>
+          <p class="label">Our time together</p>
+          <div class="units" aria-hidden="true">
+            <div class="unit"><b id="tDays">0</b><span>Days</span></div>
+            <div class="unit"><b id="tHours">0</b><span>Hours</span></div>
+            <div class="unit"><b id="tMins">0</b><span>Mins</span></div>
+            <div class="unit"><b id="tSecs">0</b><span>Secs</span></div>
+          </div>
+        </div>
+
+        <div class="love-area">
+          <button class="love-button" id="loveButton" type="button">
+            <span aria-hidden="true">♥</span> Send a little love
+          </button>
+          <p id="loveMessage" aria-live="polite"></p>
+          <p class="love-count" id="loveCount" hidden></p>
+          <p class="hint">Tap anywhere for a little magic ✨</p>
+        </div>
+      </section>
+
+      <!-- Reasons -->
+      <section class="card reveal" aria-label="Reasons">
+        <h2 class="title">Little reasons, just for <span data-name>Williams</span></h2>
+        <p class="sub">Tap each card to find out why.</p>
+        <div class="reasons" id="reasons"></div>
+        <p class="progress" id="reasonProgress" aria-live="polite"></p>
+      </section>
+
+      <!-- Memories (shown only when media files exist) -->
+      <section class="card reveal" id="memories" aria-label="Our memories" hidden>
+        <h2 class="title">Our memories</h2>
+        <p class="sub">The moments worth keeping.</p>
+        <div class="previews">
+          <section class="preview" id="imagePreview">
+            <h3>Our pictures</h3>
+            <div class="gallery" id="gallery"></div>
+          </section>
+
+          <section class="preview" id="audioPreview">
+            <h3>Our songs</h3>
+            <div class="player">
+              <button class="vinyl" id="vinyl" type="button" aria-label="Play or pause our song" aria-pressed="false"></button>
+              <span class="caption">Tap the record to play</span>
+              <div class="tracks" id="tracks" hidden></div>
+              <audio id="audioElement" controls preload="metadata"></audio>
+            </div>
+          </section>
+
+          <section class="preview" id="videoPreview">
+            <h3>Our videos</h3>
+            <div class="videos" id="videos"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- Owner-only uploader: open this page with ?edit on the end -->
+      <section class="card reveal" id="uploader" aria-label="Add memories" hidden>
+        <h2 class="title">Add memories</h2>
+        <p class="sub">Pick photos, songs or videos and they're saved straight to your GitHub repo.</p>
+        <div class="up">
+          <label>GitHub token
+            <input id="upToken" type="password" autocomplete="off" placeholder="github_pat_…" />
+          </label>
+          <label class="pick">Choose files
+            <input id="upFiles" class="sr-only" type="file" multiple accept="image/*,audio/*,video/*" />
+          </label>
+          <div id="upStatus" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>Made with ♥ for <span data-name>Williams</span>. Keep your favorite moments close.</footer>
+  </div>
+
+  <dialog id="lightbox" aria-label="Picture">
+    <img id="lightboxImg" alt="A favorite memory, enlarged" />
+  </dialog>
+
+  <script>
+    // ==================================================================
+    // EDIT ME
+    // ==================================================================
+    const NAME = "Williams";
+
+    // The day your story started (YYYY-MM-DD). Leave "" to hide the live counter.
+    const START_DATE = "";
+
+    // Your media lives in the "media" folder of your GitHub repo. Add any number of
+    // photos, songs and videos (github.com > Add file > Upload files, or the built-in
+    // uploader: open this page with ?edit on the end) and the page finds them itself.
+    const MEDIA_DIR = "media";
+
+    // Detected automatically on GitHub Pages (you.github.io/repo). Fill in only for a
+    // custom domain. Leave branch "" to use the repo's default branch.
+    const REPO = { owner: "", repo: "", branch: "" };
+
+    // Fallback if GitHub's file list can't be read (offline, rate limit, other host).
+    const MEDIA = {
+      image: "media/photo.jpg",
+      audio: "media/song.mp3",
+      video: "media/video.mp4"
+    };
+
+    // Opening message (typed out letter by letter).
+    const INTRO = `${NAME}, you make ordinary days feel like a favorite story.`;
+
+    // Cards the person can tap to flip. Add, remove or rewrite any of these.
+    const REASONS = [
+      "Your smile makes every room brighter.",
+      "You make hard days feel lighter.",
+      "Your laugh is my favorite song.",
+      "With you, home is a person.",
+      "You see the best in me, even on my worst days.",
+      "Every moment with you becomes a memory I keep."
+    ];
+
+    // Shown one after another each time the love button is pressed.
+    const LOVE_LINES = [
+      `A little love for ${NAME} — today and always. ♥`,
+      `${NAME}, you make ordinary days feel like magic. ✨`,
+      `Every moment with you is my favorite one. 💕`,
+      `Sending ${NAME} a hug as big as the sky. ☁️`,
+      `You're the best part of my story, ${NAME}. 📖`,
+      `Still smiling because of you, ${NAME}. 😊`
+    ];
+    // ==================================================================
+
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const root = document.documentElement;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const rand = (a, b) => a + Math.random() * (b - a);
+
+      document.title = `For ${NAME} ♥`;
+      document.querySelectorAll("[data-name]").forEach((el) => (el.textContent = NAME));
+
+      /* ---------------- Theme ---------------- */
+      const toggle = $("themeToggle");
+      function applyTheme(t) {
+        root.dataset.theme = t;
+        toggle.textContent = t === "night" ? "☀️" : "🌙";
+        toggle.setAttribute("aria-label", t === "night" ? "Switch to day mode" : "Switch to night mode");
+      }
+      applyTheme(root.dataset.theme || "day");
+      toggle.addEventListener("click", () => {
+        const next = root.dataset.theme === "night" ? "day" : "night";
+        applyTheme(next);
+        try { localStorage.setItem("theme", next); } catch {}
+      });
+
+      /* ---------------- Particle canvas ---------------- */
+      const canvas = $("fx");
+      const ctx = canvas.getContext("2d");
+      const COLORS = ["#e85d75", "#ff8fa3", "#ffb3c1", "#c9184a", "#ff6f91"];
+      const BURST_CHARS = ["♥", "♥", "♥", "💕", "💗", "✨"];
+      let W = 0, H = 0, starsW = 0, stars = [], particles = [], raf = 0, last = 0;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        if (W === starsW) return; // mobile URL-bar resizes shouldn't reshuffle the stars
+        starsW = W;
+        stars = Array.from({ length: Math.round((W * H) / 14000) }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          r: rand(0.5, 1.6), p: Math.random() * Math.PI * 2
+        }));
+      }
+
+      function spawnAmbient(anywhere) {
+        particles.push({
+          x: rand(0, W), y: anywhere ? rand(0, H) : H + 30,
+          vx: rand(-0.25, 0.25), vy: -rand(0.35, 1),
+          g: 0, size: rand(10, 26), alpha: rand(0.12, 0.35), fade: 0,
+          ch: "♥", color: COLORS[(Math.random() * COLORS.length) | 0],
+          rot: rand(-0.4, 0.4), vr: rand(-0.004, 0.004), ambient: true, sway: Math.random() * 6
+        });
+      }
+
+      function burst(x, y, n = 14, power = 4) {
+        if (reduce.matches) return;
+        n = Math.min(n, 60);
+        for (let i = 0; i < n; i++) {
+          const a = Math.random() * Math.PI * 2;
+          const s = rand(0.4, 1) * power;
+          particles.push({
+            x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 1.2,
+            g: 0.07, size: rand(14, 30), alpha: 1, fade: rand(0.008, 0.018),
+            ch: BURST_CHARS[(Math.random() * BURST_CHARS.length) | 0],
+            color: COLORS[(Math.random() * COLORS.length) | 0],
+            rot: rand(-0.5, 0.5), vr: rand(-0.06, 0.06)
+          });
+        }
+        if (!raf) start();
+      }
+
+      function sparkle(x, y) {
+        particles.push({
+          x: x + rand(-6, 6), y: y + rand(-6, 6), vx: rand(-0.4, 0.4), vy: rand(-0.8, -0.2),
+          g: 0, size: rand(8, 15), alpha: 0.9, fade: 0.02, ch: "✦",
+          color: COLORS[(Math.random() * COLORS.length) | 0], rot: 0, vr: rand(-0.05, 0.05)
+        });
+        if (!raf) start();
+      }
+
+      function drawStars(now) {
+        ctx.fillStyle = "#fff";
+        for (const s of stars) {
+          ctx.globalAlpha = 0.3 + 0.5 * Math.abs(Math.sin(now / 1200 + s.p));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function frame(now) {
+        raf = requestAnimationFrame(frame);
+        const dt = Math.max(0, Math.min((now - last) / 16.67, 3));
+        last = now;
+        ctx.clearRect(0, 0, W, H);
+        if (root.dataset.theme === "night") drawStars(now);
+
+        if (particles.filter((p) => p.ambient).length < 28 && Math.random() < 0.04 * dt) spawnAmbient(false);
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.vy += p.g * dt;
+          p.x += (p.vx + (p.ambient ? Math.sin(now / 900 + p.sway) * 0.3 : 0)) * dt;
+          p.y += p.vy * dt;
+          p.rot += p.vr * dt;
+          if (p.ambient) {
+            if (p.y < -40) { particles.splice(i, 1); continue; }
+          } else {
+            p.alpha -= p.fade * dt;
+            if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+          }
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.font = `${p.size}px serif`;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillText(p.ch, 0, 0);
+          ctx.restore();
+        }
+      }
+
+      function start() {
+        if (raf || reduce.matches || document.hidden) return;
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+      function stop() {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+
+      resize();
+      window.addEventListener("resize", resize);
+      if (!reduce.matches) {
+        for (let i = 0; i < 14; i++) spawnAmbient(true);
+        start();
+      }
+      document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+      reduce.addEventListener("change", () => {
+        if (reduce.matches) { stop(); particles = []; ctx.clearRect(0, 0, W, H); }
+        else { for (let i = 0; i < 14; i++) spawnAmbient(true); start(); }
+      });
+
+      let lastTrail = 0;
+      window.addEventListener("pointermove", (e) => {
+        if (e.pointerType !== "mouse" || reduce.matches) return;
+        const t = performance.now();
+        if (t - lastTrail < 60) return;
+        lastTrail = t;
+        sparkle(e.clientX, e.clientY);
+      });
+      window.addEventListener("pointerdown", (e) => {
+        if (e.target.closest("button, a, input, label, audio, video, dialog, .flip")) return;
+        burst(e.clientX, e.clientY, 7, 3);
+      });
+
+      const centerOf = (el) => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      };
+
+      /* ---------------- Typewriter ---------------- */
+      $("introFull").textContent = INTRO;
+      const typed = $("typed");
+      if (reduce.matches) {
+        typed.textContent = INTRO;
+        typed.classList.add("done");
+      } else {
+        let i = 0;
+        const chars = Array.from(INTRO); // keeps emoji whole
+        const tick = () => {
+          typed.textContent = chars.slice(0, ++i).join("");
+          if (i < chars.length) setTimeout(tick, rand(30, 70));
+          else typed.classList.add("done");
+        };
+        setTimeout(tick, 500);
+      }
+
+      /* ---------------- Time together ---------------- */
+      const dm = /^(\d{4})-(\d{2})-(\d{2})$/.exec(START_DATE);
+      if (dm) {
+        const startMs = new Date(+dm[1], +dm[2] - 1, +dm[3]).getTime();
+        if (!isNaN(startMs) && startMs <= Date.now()) {
+          const box = $("together");
+          const cells = { d: $("tDays"), h: $("tHours"), m: $("tMins"), s: $("tSecs") };
+          const setText = (el, v) => { if (el.textContent !== String(v)) el.textContent = v; };
+          const update = () => {
+            const diff = Math.floor((Date.now() - startMs) / 1000);
+            const days = Math.floor(diff / 86400);
+            setText(cells.d, days.toLocaleString());
+            setText(cells.h, Math.floor(diff / 3600) % 24);
+            setText(cells.m, Math.floor(diff / 60) % 60);
+            setText(cells.s, diff % 60);
+            box.setAttribute("aria-label", `Together for ${days} days`);
+          };
+          update();
+          box.hidden = false;
+          setInterval(update, 1000);
+        }
+      }
+
+      /* ---------------- Love button ---------------- */
+      let loves = 0;
+      try { loves = Number(localStorage.getItem("loveCount")) || 0; } catch {}
+      const loveMessage = $("loveMessage");
+      const loveCount = $("loveCount");
+      const loveButton = $("loveButton");
+
+      function showLoveCount() {
+        if (!loves) return;
+        loveCount.hidden = false;
+        loveCount.textContent = `You've sent ${loves} little love${loves === 1 ? "" : "s"} ♥`;
+      }
+      showLoveCount();
+
+      loveButton.addEventListener("click", () => {
+        loves++;
+        try { localStorage.setItem("loveCount", String(loves)); } catch {}
+        const milestone = loves % 10 === 0;
+        const line = milestone
+          ? `That's ${loves} hearts for ${NAME}! 🎉`
+          : LOVE_LINES[(loves - 1) % LOVE_LINES.length];
+        // Alternate an invisible character so screen readers announce repeats.
+        loveMessage.textContent = line + (loves % 2 ? "" : "​");
+        showLoveCount();
+        const c = centerOf(loveButton);
+        burst(c.x, c.y, milestone ? 50 : 18, milestone ? 7 : 4.5);
+      });
+
+      /* ---------------- Reason cards ---------------- */
+      const grid = $("reasons");
+      const progress = $("reasonProgress");
+      const found = new Set();
+
+      function updateProgress() {
+        if (found.size === REASONS.length) {
+          progress.textContent = `All ${REASONS.length} found — and there are a million more, ${NAME}. ♥`;
+        } else if (found.size) {
+          progress.textContent = `${found.size} of ${REASONS.length} reasons found`;
+        } else {
+          progress.textContent = "";
+        }
+      }
+
+      function celebrate() {
+        for (let k = 0; k < 6; k++) {
+          setTimeout(() => burst(rand(W * 0.15, W * 0.85), rand(H * 0.2, H * 0.6), 30, 6), k * 220);
+        }
+      }
+
+      REASONS.forEach((text, i) => {
+        const card = document.createElement("div");
+        card.className = "flip";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-pressed", "false");
+        card.setAttribute("aria-label", `Reason ${i + 1}: ${text}`);
+
+        const inner = document.createElement("span");
+        inner.className = "flip-inner";
+
+        const front = document.createElement("span");
+        front.className = "face front";
+        const num = document.createElement("span");
+        num.className = "num";
+        num.textContent = `Reason ${i + 1}`;
+        const big = document.createElement("span");
+        big.className = "big";
+        big.textContent = "♥";
+        const tap = document.createElement("span");
+        tap.className = "tap";
+        tap.textContent = "Tap to reveal";
+        front.append(num, big, tap);
+
+        const back = document.createElement("span");
+        back.className = "face back";
+        back.textContent = text;
+
+        inner.append(front, back);
+        card.append(inner);
+        grid.append(card);
+
+        const flip = () => {
+          const on = card.classList.toggle("flipped");
+          card.setAttribute("aria-pressed", String(on));
+          if (on) {
+            const c = centerOf(card);
+            burst(c.x, c.y, 10, 3.5);
+            const before = found.size;
+            found.add(i);
+            if (before !== found.size && found.size === REASONS.length) celebrate();
+            updateProgress();
+          }
+        };
+        card.addEventListener("click", flip);
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); }
+        });
+
+        // Gentle 3D tilt that follows the mouse.
+        card.addEventListener("pointermove", (e) => {
+          if (e.pointerType !== "mouse" || reduce.matches) return;
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - 0.5;
+          const y = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+        });
+        card.addEventListener("pointerleave", () => (card.style.transform = ""));
+      });
+
+      /* ---------------- Memories (auto-found in the media folder) ---------------- */
+      const memories = $("memories");
+      const gallery = $("gallery");
+      const videos = $("videos");
+      const trackList = $("tracks");
+      const audio = $("audioElement");
+      const vinyl = $("vinyl");
+      const lightbox = $("lightbox");
+      const MAX_BYTES = 50 * 1024 * 1024;
+      const EXT = {
+        image: /\.(jpe?g|png|gif|webp|avif|svg)$/i,
+        audio: /\.(mp3|m4a|wav|ogg|oga|aac|flac)$/i,
+        video: /\.(mp4|webm|m4v|mov|ogv)$/i
+      };
+      const kindOf = (name) => Object.keys(EXT).find((k) => EXT[k].test(name));
+      const prettyName = (n) => n.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ");
+      let items = []; // { kind, name, src }
+
+      // Work out which GitHub repo this page lives in (you.github.io/repo/).
+      const GH = (() => {
+        const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+        const seg = location.pathname.split("/")[1] || "";
+        return {
+          owner: REPO.owner || (m ? m[1] : ""),
+          repo: REPO.repo || (m ? (seg && !seg.includes(".") ? seg : m[0]) : ""),
+          branch: REPO.branch
+        };
+      })();
+      const apiUrl = (path) => `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${path}`;
+      const refQuery = () => (GH.branch ? `?ref=${encodeURIComponent(GH.branch)}` : "");
+
+      // Resolves true only if the browser can actually load/play the file.
+      const probe = (kind, src) => new Promise((ok) => {
+        const el = kind === "image" ? new Image() : document.createElement(kind);
+        if (kind !== "image") el.preload = "metadata";
+        el.onerror = () => ok(false);
+        el[kind === "image" ? "onload" : "onloadedmetadata"] = () => ok(true);
+        el.src = src;
+      });
+
+      async function listFiles() {
+        if (GH.owner && GH.repo) {
+          try {
+            const r = await fetch(apiUrl(MEDIA_DIR) + refQuery(), {
+              headers: { Accept: "application/vnd.github+json" }, cache: "no-store"
+            });
+            if (r.ok) {
+              const names = (await r.json()).filter((f) => f.type === "file").map((f) => f.name);
+              if (names.length) return names;
+            }
+          } catch {}
+        }
+        return Object.values(MEDIA).filter(Boolean).map((p) => p.split("/").pop());
+      }
+
+      async function loadMedia() {
+        const found = (await listFiles())
+          .map((name) => ({ name, kind: kindOf(name), src: `${MEDIA_DIR}/${encodeURIComponent(name)}` }))
+          .filter((f) => f.kind);
+        const ok = await Promise.all(found.map((f) => probe(f.kind, f.src)));
+        const bad = found.filter((f, i) => !ok[i]).map((f) => f.name);
+        if (bad.length) console.warn(`Couldn't load: ${bad.join(", ")}. New files can take a minute or two to appear on GitHub Pages.`);
+        items = found.filter((f, i) => ok[i]);
+        render();
+      }
+
+      function markTrack() {
+        trackList.querySelectorAll("button").forEach((b) =>
+          b.classList.toggle("on", b.dataset.src === audio.getAttribute("src")));
+      }
+
+      function render() {
+        const by = (k) => items.filter((i) => i.kind === k);
+        const imgs = by("image"), vids = by("video"), songs = by("audio");
+
+        gallery.classList.toggle("one", imgs.length === 1);
+        gallery.replaceChildren(...imgs.map((i) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "img-btn";
+          b.setAttribute("aria-label", "View picture larger");
+          const im = new Image();
+          im.alt = "A favorite memory";
+          im.src = i.src;
+          b.append(im);
+          return b;
+        }));
+
+        videos.replaceChildren(...vids.map((i) => {
+          const v = document.createElement("video");
+          v.controls = true;
+          v.playsInline = true;
+          v.preload = "metadata";
+          v.src = i.src;
+          return v;
+        }));
+
+        trackList.replaceChildren(...songs.map((s) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.textContent = prettyName(s.name);
+          b.dataset.src = s.src;
+          b.addEventListener("click", () => {
+            audio.src = s.src;
+            audio.play().catch(() => {});
+            markTrack();
+          });
+          return b;
+        }));
+        trackList.hidden = songs.length < 2;
+        if (songs.length && !songs.some((s) => s.src === audio.getAttribute("src"))) audio.src = songs[0].src;
+        markTrack();
+
+        $("imagePreview").classList.toggle("visible", imgs.length > 0);
+        $("audioPreview").classList.toggle("visible", songs.length > 0);
+        $("videoPreview").classList.toggle("visible", vids.length > 0);
+        memories.hidden = !items.length;
+        if (items.length) observe(memories);
+      }
+
+      // Only one song/video plays at a time (play doesn't bubble, so listen in the capture phase).
+      document.addEventListener("play", (e) => {
+        document.querySelectorAll("audio, video").forEach((m) => { if (m !== e.target) m.pause(); });
+      }, true);
+
+      const setSpin = (on) => {
+        vinyl.classList.toggle("playing", on);
+        vinyl.setAttribute("aria-pressed", String(on));
+      };
+      audio.addEventListener("play", () => setSpin(true));
+      audio.addEventListener("pause", () => setSpin(false));
+      audio.addEventListener("ended", () => {
+        setSpin(false);
+        const btns = [...trackList.querySelectorAll("button")];
+        const i = btns.findIndex((b) => b.classList.contains("on"));
+        if (btns.length > 1 && i > -1) btns[(i + 1) % btns.length].click(); // next song
+      });
+      vinyl.addEventListener("click", () => {
+        if (audio.paused) audio.play().catch(() => {});
+        else audio.pause();
+      });
+
+      // Picture lightbox
+      gallery.addEventListener("click", (e) => {
+        const img = e.target.closest("img");
+        if (!img) return;
+        $("lightboxImg").src = img.src;
+        if (typeof lightbox.showModal === "function") lightbox.showModal();
+      });
+      lightbox.addEventListener("click", () => lightbox.close());
+
+      /* ---------------- Uploader: open the page with ?edit on the end ---------------- */
+      function readBase64(file) {
+        return new Promise((res, rej) => {
+          const r = new FileReader();
+          r.onload = () => res(String(r.result).split(",")[1]);
+          r.onerror = () => rej(new Error("Couldn't read the file"));
+          r.readAsDataURL(file);
+        });
+      }
+
+      async function putFile(file, name, token) {
+        const url = apiUrl(`${MEDIA_DIR}/${encodeURIComponent(name)}`);
+        const headers = { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" };
+        let sha;
+        const head = await fetch(url + refQuery(), { headers, cache: "no-store" });
+        if (head.ok) sha = (await head.json()).sha; // file exists: replace it
+        const body = { message: `Add ${name}`, content: await readBase64(file), sha };
+        if (GH.branch) body.branch = GH.branch;
+        const r = await fetch(url, { method: "PUT", headers, body: JSON.stringify(body) });
+        if (!r.ok) {
+          const msg = (await r.json().catch(() => ({}))).message || `HTTP ${r.status}`;
+          throw new Error([401, 403, 404].includes(r.status)
+            ? `${msg} — check the token has Contents: Read and write access to this repo`
+            : msg);
+        }
+      }
+
+      function initUploader() {
+        if (!new URLSearchParams(location.search).has("edit")) return;
+        const box = $("uploader"), status = $("upStatus"), tokenInput = $("upToken"), picker = $("upFiles");
+        const say = (msg) => { const p = document.createElement("p"); p.textContent = msg; status.append(p); };
+        box.hidden = false;
+        try { tokenInput.value = sessionStorage.getItem("ghToken") || ""; } catch {}
+        if (!GH.owner || !GH.repo) {
+          picker.disabled = true;
+          say("Uploads work once this page is live on GitHub Pages (or fill in REPO at the top of the file).");
+          return;
+        }
+        picker.addEventListener("change", async () => {
+          const files = [...picker.files];
+          picker.value = "";
+          const token = tokenInput.value.trim();
+          status.replaceChildren();
+          if (!token) return say("Paste your GitHub token first.");
+          try { sessionStorage.setItem("ghToken", token); } catch {}
+          for (const f of files) {
+            const name = f.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
+            const kind = kindOf(name);
+            if (!kind) { say(`Skipped ${f.name}: browsers can't play that type (HEIC photos and some others). Use JPG, PNG, MP3, M4A, MP4 or WebM.`); continue; }
+            if (f.size > MAX_BYTES) { say(`Skipped ${f.name}: over 50 MB. Shrink it, or add it on github.com instead.`); continue; }
+            say(`Uploading ${name}…`);
+            try {
+              await putFile(f, name, token);
+              items = items.filter((i) => i.name !== name).concat({ kind, name, src: URL.createObjectURL(f) });
+              items.sort((a, b) => a.name.localeCompare(b.name));
+              render();
+              say(`Saved ${name}. Everyone else will see it in a minute or two.`);
+            } catch (err) {
+              say(`Couldn't save ${name}: ${err.message}`);
+            }
+          }
+        });
+      }
+
+      /* ---------------- Scroll reveal ---------------- */
+      const io = "IntersectionObserver" in window
+        ? new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+            });
+          }, { threshold: 0.12 })
+        : null;
+      function observe(el) {
+        if (!io || reduce.matches) el.classList.add("in");
+        else io.observe(el);
+      }
+      document.querySelectorAll(".reveal").forEach(observe);
+      loadMedia();
+      initUploader();
+    })();
+  </script>
+</body>
+</html>
